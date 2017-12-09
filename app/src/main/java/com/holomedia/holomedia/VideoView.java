@@ -21,6 +21,7 @@ public class VideoView extends FragmentActivity {
         setContentView(R.layout.activity_video_view);
 
         mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
     }

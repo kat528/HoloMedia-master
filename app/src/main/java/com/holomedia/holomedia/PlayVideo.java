@@ -1,5 +1,6 @@
 package com.holomedia.holomedia;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.media.MediaPlayer;
@@ -16,11 +17,15 @@ public class PlayVideo extends AppCompatActivity {
     private int position = 0;
     private ProgressDialog progressDialog;
     private MediaController mediaControls;
+    private int[] videos = new int[]{R.raw.butterfly, R.raw.earth, R.raw.heart};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
+
+        setRequestedOrientation(
+                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         if (mediaControls == null) {
             mediaControls = new MediaController(PlayVideo.this);
@@ -44,7 +49,7 @@ public class PlayVideo extends AppCompatActivity {
 
         try {
             myVideoView.setMediaController(mediaControls);
-            myVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + vid));
+            myVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videos[vid]));
 
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
