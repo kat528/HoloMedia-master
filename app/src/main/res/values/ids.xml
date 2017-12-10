@@ -2,4 +2,5 @@
 <resources>
     <item name="backbutton" type="id">backbutton</item>
     <item name="about_menu" type="id">about_menu</item>
+    <item name="LoadVid" type="id">Loadvid</item>
 </resources>
