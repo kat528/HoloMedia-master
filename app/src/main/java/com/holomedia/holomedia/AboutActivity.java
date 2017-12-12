@@ -6,9 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,28 +14,19 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
 
+public class AboutActivity extends AppCompatActivity {
     private static final String TAG = "TEST";
     private boolean phoneDevice = true;
-
-    private Button src_btn;
-    private Animation SrcAnimation;
-    private Handler handler;
-    BottomNavigationView bottomNavigationView ;
-
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_about);
 
         int screenSize = getResources().getConfiguration().screenLayout &
                 Configuration.SCREENLAYOUT_SIZE_MASK;
@@ -49,74 +37,22 @@ public class MainActivity extends AppCompatActivity {
 
         if (phoneDevice)
             setRequestedOrientation(
-                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); }
 
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.down_toolbar);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.favorite:
-                                Intent i=new Intent(MainActivity.this,VideoView.class);
-                                Log.i(TAG, "onNavigationItemSelected: ");
-                                startActivity(i);
-                                break;
-                            case R.id.Gallery:
-                                Intent k=new Intent(MainActivity.this,VideoView.class);
-                                Log.i(TAG, "onNavigationItemSelected: ");
-                                startActivity(k);
-                                break;
-                            case R.id.add:
-                                Intent a=new Intent(MainActivity.this,Add_video.class);
-                            Log.i(TAG, "onNavigationItemSelected: ");
-                            startActivity(a);
-                            break;
-                        }
-                        return false;
-                    }
-                });
-
-
-
-        handler=new Handler();
-        SrcAnimation= AnimationUtils.loadAnimation(this,R.anim.search_anim);
-        SrcAnimation.start();
-
-
-
-        Log.i(TAG, "onCreate: ");
-
-
-
-
-    }
-
+    @Override
     protected void onStart(){
         super.onStart();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("HoloMedia");
+        toolbar.setTitle("About");
         setSupportActionBar(toolbar);
         Intent i=getIntent();
         Log.i(TAG, "onStart: ");
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
     }
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,13 +63,19 @@ public class MainActivity extends AppCompatActivity {
         display.getRealSize(screenSize);
         if (screenSize.x < screenSize.y) // x είναι το πλάτος,  y είναι το ύψος
         {
-            getMenuInflater().inflate(R.menu.main_menu, menu);
-            // διογκώνει το μενού
+            getMenuInflater().inflate(R.menu.main_menu, menu); // διογκώνει το μενού
             return true;
         } else
             return false;
 
     }
+
+
+
+
+
+//Toolbar Settings------------------------------------------------------------------------------------
+
 
 
     private void open(){
@@ -161,6 +103,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onSupportNavigateUp() {              //Back Button
+        onBackPressed();
+        return true;
+    }
+
+
 
     private void exitdialog(){
         open();
@@ -169,11 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.about_menu:
-                Log.i(TAG, "onOptionsItemSelected: ");
-                Intent h=new Intent(this,AboutActivity.class);
-                startActivity(h);
-                return true;
+
             case R.id.exit:
                 exitdialog();
                 return true;
@@ -190,8 +135,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+
+}
     }
 
 
 
-}
+

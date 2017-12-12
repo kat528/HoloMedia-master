@@ -211,14 +211,15 @@ public class Add_video extends AppCompatActivity {
 
             case R.id.about_menu:
                 Log.i(TAG, "onOptionsItemSelected: ");
-                Intent a=new Intent(this,MainActivity.class); //some code here
+                Intent a=new Intent(this,AboutActivity.class); //some code here
                 startActivity(a);
                 return true;
             case R.id.exit:
                 exitdialog();
                 return true;
             case R.id.help:
-                //some code here
+                Intent b=new Intent(this,HelpActvity.class); //some code here
+                startActivity(b);
                 return true;
 
 
@@ -228,7 +229,7 @@ public class Add_video extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
 
-        }
+}
     }
 
 

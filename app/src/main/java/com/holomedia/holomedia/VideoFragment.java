@@ -1,22 +1,23 @@
 package com.holomedia.holomedia;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v4.app.Fragment;
+
 
 public class VideoFragment extends Fragment {
+
 
     int page, position;
     private String title;
     private int[] videos = new int[]{R.raw.butterfly, R.raw.earth, R.raw.heart};
+    private Toolbar toolbar;
 
     public static VideoFragment newInstance(int position, int page, String title) {
         VideoFragment fragment = new VideoFragment();
@@ -25,6 +26,7 @@ public class VideoFragment extends Fragment {
         args.putString("someTitle", title);
         args.putInt("somePosition", position);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -34,6 +36,8 @@ public class VideoFragment extends Fragment {
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("someTitle");
         position = getArguments().getInt("somePosition");
+
+
     }
 
     @Override
@@ -52,7 +56,24 @@ public class VideoFragment extends Fragment {
                 startActivity(a);
             }
         });
+
+
         imageView.setImageResource(position);
+
+
+
+
         return view;
+
     }
-}
+
+
+
+        }
+
+
+
+
+
+
+
