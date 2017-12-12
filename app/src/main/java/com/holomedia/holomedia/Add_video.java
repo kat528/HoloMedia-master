@@ -21,15 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.VideoView;
 
 public class Add_video extends AppCompatActivity {
 
     public  static final int  MY_PERMISSIONS_REQUEST_STORAGE = 0;
     private static int RESULT_LOAD_IMAGE = 1;
     private static final String TAG = "TEST";
-    VideoView videoField;
-    Button LoadVid;
+    Button LoadVidGal;
+    Button LoadVidInt;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -56,9 +55,8 @@ public class Add_video extends AppCompatActivity {
 
 
 
-        LoadVid = (Button)findViewById(R.id.LoadVid);
-        videoField =  (VideoView) findViewById(R.id.videoView);
-        LoadVid.setOnClickListener(new View.OnClickListener() {
+        LoadVidGal = (Button)findViewById(R.id.LoadVidGal);
+        LoadVidGal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
@@ -66,7 +64,14 @@ public class Add_video extends AppCompatActivity {
             }
         });
 
-
+        LoadVidInt = (Button)findViewById(R.id.LoadVidInt);
+        LoadVidInt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"));
+                startActivity(i);
+            }
+        });
 
 
 
@@ -116,12 +121,9 @@ public class Add_video extends AppCompatActivity {
 
         if(resultCode == RESULT_OK){
             Uri uri = data.getData();                                                       //Videoplay
-            try{
-                videoField.setVideoURI(uri);
-                videoField.start();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+            Intent i = new Intent(this, PlayVideo.class);
+            i.putExtra("uri",uri);
+            startActivity(i);
         }
     }
 

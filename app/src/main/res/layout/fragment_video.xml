@@ -11,7 +11,8 @@
         android:id="@+id/imageview"
         android:layout_width="match_parent"
         android:layout_height="442dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:background="@color/colorAccent" />
 
     <TextView
         android:id="@+id/videoname"

@@ -1,6 +1,7 @@
 package com.holomedia.holomedia;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -51,8 +52,9 @@ public class VideoFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Uri uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + videos[page]);
                 Intent a=new Intent(view.getContext(),PlayVideo.class);
-                a.putExtra("videoSource",page);
+                a.putExtra("uri",uri);
                 startActivity(a);
             }
         });
@@ -69,11 +71,4 @@ public class VideoFragment extends Fragment {
 
 
 
-        }
-
-
-
-
-
-
-
+}

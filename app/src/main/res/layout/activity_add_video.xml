@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -18,18 +18,24 @@
         tools:background="@color/colorAccent"
         tools:layout_editor_absoluteY="-41dp" />
 
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="386dp"
-        android:layout_weight="1"></VideoView>
-
     <Button
-        android:id="@+id/LoadVid"
+        android:id="@+id/LoadVidInt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/LoadVidGal"
+        android:layout_alignStart="@+id/LoadVidGal"
         android:layout_gravity="center"
-        android:layout_weight="0"
-        android:text="Load Video"></Button>
+        android:layout_marginBottom="125dp"
+        android:text="Load Video From Internet" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/LoadVidGal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="166dp"
+        android:text="Load Video From Gallery" />
+
+</RelativeLayout>

@@ -26,7 +26,8 @@
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity android:name=".Add_video" />
         <activity android:name=".VideoView" />
-        <activity android:name=".PlayVideo" />
+        <activity android:name=".PlayVideo"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
         <activity android:name=".AboutActivity"></activity>
         <activity android:name=".HelpActvity"></activity>
     </application>
