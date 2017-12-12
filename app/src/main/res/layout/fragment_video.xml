@@ -2,29 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/holo_add"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.holomedia.holomedia.VideoFragment">
+
 
     <ImageButton
         android:id="@+id/imageview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorAccent"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        tools:background="@color/colorAccent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="-41dp" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:button="@drawable/favorite" />
+        android:layout_height="442dp"
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/videoname"
@@ -32,6 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:textAlignment="center"/>
+
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp" />
 
 </FrameLayout>
