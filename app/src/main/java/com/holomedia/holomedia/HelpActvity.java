@@ -13,13 +13,16 @@ import android.widget.Button;
 
 public class HelpActvity extends AppCompatActivity {
 
-Button youtubebtn;
+Button youtubebtn,contbtn,donbtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
     youtubebtn=(Button) findViewById(R.id.hp_btn);
+    contbtn=(Button) findViewById(R.id.cont_button);
+    donbtn=(Button) findViewById(R.id.don_button);
         youtubebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,9 +30,20 @@ Button youtubebtn;
             }
         });
 
+        contbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               cont_button();
+            }
+        });
 
 
-
+        donbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                donatebtn();
+            }
+        });
 
 
 
@@ -53,7 +67,53 @@ Button youtubebtn;
 
     }
 
+    protected void sendToPaypal() {
+        String url = "https://www.paypal.com/signin?"; // You could have this at the top of the class as a constant, or pass it in as a method variable, if you wish to send to multiple websites
+        Intent i = new Intent(Intent.ACTION_VIEW); // Create a new intent - stating you want to 'view something'
+        i.setData(Uri.parse(url));  // Add the url data (allowing android to realise you want to open the browser)
+        startActivity(i); // Go go go!
 
+    }
+
+
+
+    private void cont_button() {
+        AlertDialog.Builder alertDialogBuilderbutt1 = new AlertDialog.Builder(this);
+        alertDialogBuilderbutt1.setMessage("Our E-mails : cs141065@teiath.gr ,cs141016@teiath.gr");
+
+
+        alertDialogBuilderbutt1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilderbutt1.create();
+        alertDialog.show();
+    }
+
+    private void donatebtn(){
+        AlertDialog.Builder alertDialogBuilder3 = new AlertDialog.Builder(this);
+        alertDialogBuilder3.setMessage("Would you like to support the developers of this app?");
+        alertDialogBuilder3.setPositiveButton(R.string.YesAlert,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        sendToPaypal();
+                    }
+                });
+
+        alertDialogBuilder3.setNegativeButton(R.string.YesAlert,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendToPaypal();
+
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder3.create();
+        alertDialog.show();
+    }
 
 
 //Toolbar Settings------------------------------------------------------------------------------------
@@ -83,6 +143,9 @@ Button youtubebtn;
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+
+
 
 
     @Override
