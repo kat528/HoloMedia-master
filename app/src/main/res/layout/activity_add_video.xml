@@ -1,41 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/holo_add"
-    android:layout_height="fill_parent">
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:background="@color/colorAccent"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         tools:background="@color/colorAccent"
         tools:layout_editor_absoluteY="-41dp" />
 
-    <Button
-        android:id="@+id/LoadVidInt"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/LoadVidGal"
-        android:layout_alignStart="@+id/LoadVidGal"
-        android:layout_gravity="center"
-        android:layout_marginBottom="125dp"
-        android:text="Load Video From Internet" />
 
-    <Button
+        android:fontFamily="monospace"
+        android:text="Load Video From:"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="48dp"
+        tools:layout_editor_absoluteY="27dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="264dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <com.spark.submitbutton.SubmitButton
         android:id="@+id/LoadVidGal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginBottom="166dp"
-        android:text="Load Video From Gallery" />
+        android:layout_width="225dp"
+        android:layout_height="80dp"
+        android:text="@string/Gallery"
+        android:textColor="@color/gray"
+        app:sub_btn_background="@color/white"
+        app:sub_btn_duration="1000"
+        app:sub_btn_line_color="#1abc9c"
+        app:sub_btn_ripple_color="#1abc9c"
+        app:sub_btn_tick_color="@color/white"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="453dp" />
 
-</RelativeLayout>
+    <com.spark.submitbutton.SubmitButton
+        android:id="@+id/LoadVidInt"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:text="@string/internet"
+        android:textColor="@color/gray"
+        app:sub_btn_background="@color/white"
+        app:sub_btn_duration="1000"
+        app:sub_btn_line_color="#1abc9c"
+        app:sub_btn_ripple_color="#1abc9c"
+        app:sub_btn_tick_color="@color/white"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="453dp" />
+
+
+</LinearLayout>
+

@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(k);
                                 break;
                             case R.id.add:
-                                Intent a=new Intent(MainActivity.this,Add_video.class);
-                            Log.i(TAG, "onNavigationItemSelected: ");
-                            startActivity(a);
+
+                                Warning();
+
                             break;
                         }
                         return false;
@@ -112,7 +112,37 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    private void Warning(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(R.string.Warning);
 
+        alertDialogBuilder.setMessage("Be sure to click on the help menu for advice \"how to make hologram videos\" before you continue...   ");
+        alertDialogBuilder.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent a=new Intent(MainActivity.this,Add_video.class);
+                Log.i(TAG, "onNavigationItemSelected: ");
+                startActivity(a);
+
+            }
+
+        });
+        alertDialogBuilder.setNegativeButton("Take me there!",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent a=new Intent(MainActivity.this,HelpActvity.class);
+                Log.i(TAG, "onNavigationItemSelected: ");
+                startActivity(a);
+
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
 
 
@@ -152,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
 
             }
         });

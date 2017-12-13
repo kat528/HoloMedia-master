@@ -20,15 +20,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+
+import com.spark.submitbutton.SubmitButton;
 
 public class Add_video extends AppCompatActivity {
 
     public  static final int  MY_PERMISSIONS_REQUEST_STORAGE = 0;
     private static int RESULT_LOAD_IMAGE = 1;
     private static final String TAG = "TEST";
-    Button LoadVidGal;
-    Button LoadVidInt;
+    SubmitButton  LoadVidGal;
+    SubmitButton  LoadVidInt;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -55,7 +56,7 @@ public class Add_video extends AppCompatActivity {
 
 
 
-        LoadVidGal = (Button)findViewById(R.id.LoadVidGal);
+        LoadVidGal = (SubmitButton)findViewById(R.id.LoadVidGal);
         LoadVidGal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +65,7 @@ public class Add_video extends AppCompatActivity {
             }
         });
 
-        LoadVidInt = (Button)findViewById(R.id.LoadVidInt);
+        LoadVidInt = (SubmitButton)findViewById(R.id.LoadVidInt);
         LoadVidInt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +78,7 @@ public class Add_video extends AppCompatActivity {
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("HoloMedia");
+        toolbar.setTitle("Add Video");
         setSupportActionBar(toolbar);
         Intent i=getIntent();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -146,6 +147,19 @@ public class Add_video extends AppCompatActivity {
             return false;
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

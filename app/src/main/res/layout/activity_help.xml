@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     <Button
