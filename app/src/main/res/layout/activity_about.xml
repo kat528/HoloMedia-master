@@ -74,11 +74,11 @@
 
         <TextView
             android:id="@+id/infoTxtView"
-            android:layout_width="180dp"
-            android:layout_height="150dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/lessonTxtView"
-            android:text="Programmers:  Variozidis GIannis (141065), Psylla Katerina (141016 )                        Version:1.0.0 "
+            android:layout_width="240dp"
+            android:layout_height="80dp"
+            android:layout_above="@+id/lessonTxtView"
+            android:layout_alignEnd="@+id/lessonTxtView"
+            android:text=" Programmers: \n Βαριοζίδης Γιάννης (141065),\n Ψύλλα Κατερίνα (141016 )\n Version:1.0.0 "
             android:textColor="@android:color/background_light"
             android:textSize="14sp"
             android:textStyle="normal|bold|italic" />

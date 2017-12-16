@@ -5,15 +5,16 @@
         android:id="@+id/Gallery"
         android:icon="@drawable/gallery_ic"
         android:title="Gallery"
+        app:showAsAction="always"/>
 
-        app:showAsAction="always"
-        >
 
-    </item>
+
+
     <item
         android:id="@+id/favorite"
         android:orderInCategory="100"
         android:icon="@drawable/heart_on"
+        android:onClick="@drawable/favorite"
         android:title="Favorites"
         app:showAsAction="always" />
 
@@ -22,4 +23,7 @@
         android:icon="@drawable/addvideo"
         android:title="Add Video"
         app:showAsAction="always" />
+
+
+
 </menu>

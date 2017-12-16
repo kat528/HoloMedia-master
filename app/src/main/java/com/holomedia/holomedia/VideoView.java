@@ -1,12 +1,18 @@
 package com.holomedia.holomedia;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 public class VideoView extends FragmentActivity {
 
@@ -14,6 +20,9 @@ public class VideoView extends FragmentActivity {
     private ViewPager mPager;
     private FragmentPagerAdapter mPagerAdapter;
     private Context context = this;
+    public String TAG="TEST";
+    boolean showingFirst = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +33,52 @@ public class VideoView extends FragmentActivity {
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.fav_toolbar);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.favorite:
+                                if(showingFirst==true) {
+                                Context context = getApplicationContext();
+                                CharSequence text = "Added to Favorites";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                                showingFirst=false;
+                                }
+                                else {
+                                    Context context = getApplicationContext();
+                                    CharSequence text = "Deleted from Favorites";
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+                                    item.setIcon(R.drawable.heart_on);
+                                    showingFirst=true;
+                                }
+
+
+                                break;
+
+
+                            case R.id.home:
+                                Intent k=new Intent(VideoView.this,MainActivity.class);
+                                Log.i(TAG, "onNavigationItemSelected: ");
+                                startActivity(k);
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
     }
+
 
     @Override
     public void onBackPressed() {
@@ -58,4 +112,7 @@ public class VideoView extends FragmentActivity {
             return videos.length;
         }
     }
+
+
+
 }
