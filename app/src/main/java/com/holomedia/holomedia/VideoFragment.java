@@ -1,15 +1,20 @@
 package com.holomedia.holomedia;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class VideoFragment extends Fragment {
@@ -18,7 +23,8 @@ public class VideoFragment extends Fragment {
     int page, position;
     private String title;
     private int[] videos = new int[]{R.raw.butterfly, R.raw.earth, R.raw.heart};
-    private Toolbar toolbar;
+    boolean showingFirst = true;
+    public String TAG="TEST";
 
     public static VideoFragment newInstance(int position, int page, String title) {
         VideoFragment fragment = new VideoFragment();
@@ -37,8 +43,6 @@ public class VideoFragment extends Fragment {
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("someTitle");
         position = getArguments().getInt("somePosition");
-
-
     }
 
     @Override
@@ -63,6 +67,50 @@ public class VideoFragment extends Fragment {
         imageView.setImageResource(position);
 
 
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                view.findViewById(R.id.fav_toolbar);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.favorite:
+                                if(showingFirst==true) {
+                                    Context context = getActivity();
+                                    CharSequence text = "Added to Favorites";
+                                    int duration = Toast.LENGTH_SHORT;
+                                    item.setIcon(R.drawable.heart_off);
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+                                    showingFirst=false;
+                                }
+                                else {
+                                    Context context = getActivity();
+                                    CharSequence text = "Deleted from Favorites";
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+                                    item.setIcon(R.drawable.heart_wh);
+                                    showingFirst=true;
+                                }
+
+
+                                break;
+
+
+                            case R.id.home:
+                                Intent k=new Intent(getActivity(),MainActivity.class);
+                                Log.i(TAG, "onNavigationItemSelected: ");
+                                startActivity(k);
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
 
 
         return view;

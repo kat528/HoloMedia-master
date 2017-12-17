@@ -20,8 +20,8 @@ public class VideoView extends FragmentActivity {
     private ViewPager mPager;
     private FragmentPagerAdapter mPagerAdapter;
     private Context context = this;
-    public String TAG="TEST";
-    boolean showingFirst = true;
+
+
 
 
     @Override
@@ -34,50 +34,7 @@ public class VideoView extends FragmentActivity {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.fav_toolbar);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.favorite:
-                                if(showingFirst==true) {
-                                Context context = getApplicationContext();
-                                CharSequence text = "Added to Favorites";
-                                int duration = Toast.LENGTH_SHORT;
-                                item.setIcon(R.drawable.heart_off);
-                                Toast toast = Toast.makeText(context, text, duration);
-                                toast.show();
-                                showingFirst=false;
-                                }
-                                else {
-                                    Context context = getApplicationContext();
-                                    CharSequence text = "Deleted from Favorites";
-                                    int duration = Toast.LENGTH_SHORT;
-                                    Toast toast = Toast.makeText(context, text, duration);
-                                    toast.show();
-                                    item.setIcon(R.drawable.heart_wh);
-                                    showingFirst=true;
-                                }
-
-
-                                break;
-
-
-                            case R.id.home:
-                                Intent k=new Intent(VideoView.this,MainActivity.class);
-                                Log.i(TAG, "onNavigationItemSelected: ");
-                                startActivity(k);
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
     }
 
 

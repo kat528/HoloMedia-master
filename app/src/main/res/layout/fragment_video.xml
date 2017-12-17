@@ -2,17 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/holo_add"
+    android:background="@drawable/gallery_font"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.holomedia.holomedia.VideoFragment">
-
-
-    <ImageButton
-        android:id="@+id/imageview"
-        android:layout_width="match_parent"
-        android:layout_height="442dp"
-        android:layout_gravity="center"
-        android:background="@color/colorAccent" />
 
     <TextView
         android:id="@+id/videoname"
@@ -20,9 +12,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-
+        android:layout_gravity="top"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
         android:textSize="30sp" />
+
+    <ImageButton
+        android:id="@+id/imageview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorAccent" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/fav_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorAccent"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:visibility="visible"
+        android:layout_gravity="bottom"
+        app:menu="@menu/fav_menu" />
 
 </FrameLayout>
