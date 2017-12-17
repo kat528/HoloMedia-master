@@ -49,6 +49,7 @@ public class VideoView extends FragmentActivity {
                                 Context context = getApplicationContext();
                                 CharSequence text = "Added to Favorites";
                                 int duration = Toast.LENGTH_SHORT;
+                                item.setIcon(R.drawable.heart_off);
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.show();
                                 showingFirst=false;
@@ -59,7 +60,7 @@ public class VideoView extends FragmentActivity {
                                     int duration = Toast.LENGTH_SHORT;
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
-                                    item.setIcon(R.drawable.heart_on);
+                                    item.setIcon(R.drawable.heart_wh);
                                     showingFirst=true;
                                 }
 
