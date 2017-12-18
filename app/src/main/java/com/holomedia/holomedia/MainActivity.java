@@ -1,12 +1,13 @@
 package com.holomedia.holomedia;
 
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
@@ -16,23 +17,25 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "TEST";
-    private boolean phoneDevice = true;
 
     private Button src_btn;
     private Animation SrcAnimation;
     private Handler handler;
     BottomNavigationView bottomNavigationView ;
-
-
-
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+    private String speechResult;
 
 
     @Override
@@ -40,20 +43,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int screenSize = getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK;
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        if (screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE ||
-                screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE )
-            phoneDevice = false;
+        src_btn = findViewById(R.id.search_button);
+        src_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askSpeechInput();
+            }
+        });
 
-        if (phoneDevice)
-            setRequestedOrientation(
-                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.down_toolbar);
+        bottomNavigationView = findViewById(R.id.down_toolbar);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -94,6 +94,44 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+    // Showing google speech input dialog
+
+    private void askSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                "Hi speak something");
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+
+        }
+    }
+
+    // Receiving speech input
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    speechResult = result.get(0);
+                }
+                break;
+            }
+
+        }
+    }
+
 
     protected void onStart(){
         super.onStart();
@@ -212,10 +250,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent b=new Intent(this,HelpActvity.class); //some code here
                 startActivity(b);
                 return true;
-
-
-
-
             default:
                 return super.onOptionsItemSelected(item);
 
