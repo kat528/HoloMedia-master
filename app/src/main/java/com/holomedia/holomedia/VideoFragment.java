@@ -16,14 +16,25 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 
 public class VideoFragment extends Fragment {
 
 
-    int page, position;
+   public int page, position;
     private String title;
     private int[] videos = new int[]{R.raw.butterfly, R.raw.earth, R.raw.heart};
     boolean showingFirst = true;
+    int v=videos[position];
     public String TAG="TEST";
 
     public static VideoFragment newInstance(int position, int page, String title) {
@@ -85,6 +96,7 @@ public class VideoFragment extends Fragment {
                                     item.setIcon(R.drawable.heart_off);
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
+                                    writeToFile(title,context);
                                     showingFirst=false;
                                 }
                                 else {
@@ -93,6 +105,7 @@ public class VideoFragment extends Fragment {
                                     int duration = Toast.LENGTH_SHORT;
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
+                                    deleteToFile(title,context);
                                     item.setIcon(R.drawable.heart_wh);
                                     showingFirst=true;
                                 }
@@ -118,5 +131,44 @@ public class VideoFragment extends Fragment {
     }
 
 
+    private void writeToFile(String g,Context context) {
+        try {
+            File file=new File("/data/data/com.holomedia.holomedia/files/config.txt");
+            FileOutputStream fos = new FileOutputStream(file,true);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            if (!file.exists()) {outputStreamWriter.write(g);}
+            outputStreamWriter.append("\n"+g +"\n");
+            outputStreamWriter.close();
+        }
+    catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+
+    private void deleteToFile(String g,Context context) {
+        try {
+            File file=new File("/data/data/com.holomedia.holomedia/files/config.txt");
+            FileOutputStream fos = new FileOutputStream(file);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            if (file.exists()) {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                StringBuilder text = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (!line.equals(g) && !g.equals("\n")){
+                        text.append(line);
+                        text.append('\n');
+                    }
+                }
+                outputStreamWriter.write(text.toString());
+                br.close();
+            }
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
 
 }
