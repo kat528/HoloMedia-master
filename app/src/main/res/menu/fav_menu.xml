@@ -9,11 +9,10 @@
         app:showAsAction="always" />
 
     <item
-    android:id="@+id/favorite"
-    android:orderInCategory="100"
-    android:icon="@drawable/heart_wh"
-    android:title="Add Favorite"
-    app:showAsAction="always"
-        />
+        android:id="@+id/favorite"
+        android:icon="@drawable/heart_wh"
+        android:orderInCategory="100"
+        android:title="Add Favorite"
+        app:showAsAction="always" />
 
 </menu>

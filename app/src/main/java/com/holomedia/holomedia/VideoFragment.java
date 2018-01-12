@@ -90,6 +90,7 @@ public class VideoFragment extends Fragment {
                         switch (item.getItemId()) {
                             case R.id.favorite:
                                 if (showingFirst == true) {
+                                    item.setTitle("Unfavorite");
                                     Context context = getActivity();
                                     CharSequence text = "Added to Favorites";
                                     int duration = Toast.LENGTH_SHORT;
@@ -99,6 +100,7 @@ public class VideoFragment extends Fragment {
                                     writeToFile(title, context);
                                     showingFirst = false;
                                 } else {
+                                    item.setTitle("Add Favorite");
                                     Context context = getActivity();
                                     CharSequence text = "Deleted from Favorites";
                                     int duration = Toast.LENGTH_SHORT;
