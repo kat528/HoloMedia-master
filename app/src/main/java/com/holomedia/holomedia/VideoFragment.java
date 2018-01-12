@@ -30,12 +30,12 @@ import java.io.OutputStreamWriter;
 public class VideoFragment extends Fragment {
 
 
-   public int page, position;
+    public int page, position;
     private String title;
     private int[] videos = new int[]{R.raw.butterfly, R.raw.earth, R.raw.heart};
     boolean showingFirst = true;
-    int v=videos[position];
-    public String TAG="TEST";
+    int v = videos[position];
+    public String TAG = "TEST";
 
     public static VideoFragment newInstance(int position, int page, String title) {
         VideoFragment fragment = new VideoFragment();
@@ -68,8 +68,8 @@ public class VideoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Uri uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + videos[page]);
-                Intent a=new Intent(view.getContext(),PlayVideo.class);
-                a.putExtra("uri",uri);
+                Intent a = new Intent(view.getContext(), PlayVideo.class);
+                a.putExtra("uri", uri);
                 startActivity(a);
             }
         });
@@ -89,25 +89,24 @@ public class VideoFragment extends Fragment {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.favorite:
-                                if(showingFirst==true) {
+                                if (showingFirst == true) {
                                     Context context = getActivity();
                                     CharSequence text = "Added to Favorites";
                                     int duration = Toast.LENGTH_SHORT;
                                     item.setIcon(R.drawable.heart_off);
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
-                                    writeToFile(title,context);
-                                    showingFirst=false;
-                                }
-                                else {
+                                    writeToFile(title, context);
+                                    showingFirst = false;
+                                } else {
                                     Context context = getActivity();
                                     CharSequence text = "Deleted from Favorites";
                                     int duration = Toast.LENGTH_SHORT;
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
-                                    deleteToFile(title,context);
+                                    deleteToFile(title, context);
                                     item.setIcon(R.drawable.heart_wh);
-                                    showingFirst=true;
+                                    showingFirst = true;
                                 }
 
 
@@ -115,7 +114,7 @@ public class VideoFragment extends Fragment {
 
 
                             case R.id.home:
-                                Intent k=new Intent(getActivity(),MainActivity.class);
+                                Intent k = new Intent(getActivity(), MainActivity.class);
                                 Log.i(TAG, "onNavigationItemSelected: ");
                                 startActivity(k);
                                 break;
@@ -131,44 +130,49 @@ public class VideoFragment extends Fragment {
     }
 
 
-    private void writeToFile(String g,Context context) {
+    private void writeToFile(String g, Context context) {
         try {
-            File file=new File("/data/data/com.holomedia.holomedia/files/config.txt");
-            FileOutputStream fos = new FileOutputStream(file,true);
+            File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
+            FileOutputStream fos = new FileOutputStream(file, true);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
-            if (!file.exists()) {outputStreamWriter.write(g);}
-            outputStreamWriter.append("\n"+g +"\n");
+            if (!file.exists()) {
+                outputStreamWriter.write(g);
+            }
+            outputStreamWriter.append("\n" + g + "\n");
             outputStreamWriter.close();
-        }
-    catch (IOException e) {
+        } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
     }
 
 
-    private void deleteToFile(String g,Context context) {
+    private void deleteToFile(String g, Context context) {
         try {
-            File file=new File("/data/data/com.holomedia.holomedia/files/config.txt");
-            FileOutputStream fos = new FileOutputStream(file);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
+
             if (file.exists()) {
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 StringBuilder text = new StringBuilder();
                 String line;
                 while ((line = br.readLine()) != null) {
-                    if (!line.equals(g) && !g.equals("\n")){
+                    if (!line.equals(g) && !g.equals("\n")) {
                         text.append(line);
                         text.append('\n');
                     }
                 }
-                outputStreamWriter.write(text.toString());
                 br.close();
+
+                //start writing from here
+                FileOutputStream fos = new FileOutputStream(file);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+                outputStreamWriter.write(text.toString());
+                outputStreamWriter.flush();
+                outputStreamWriter.close();
             }
-            outputStreamWriter.close();
-        }
-        catch (IOException e) {
+
+        } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
-    }
 
+    }
 }
