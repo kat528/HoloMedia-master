@@ -14,26 +14,29 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class VideoView extends FragmentActivity {
 
-    private int [] videos = {R.drawable.butterfly, R.drawable.earth, R.drawable.heart};
+
+    private ArrayList<Integer> videos = new ArrayList<>();
     private ViewPager mPager;
     private FragmentPagerAdapter mPagerAdapter;
     private Context context = this;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_view);
 
+        Intent intent = getIntent();
+        videos = intent.getIntegerArrayListExtra("vid");
+        if (videos.size() == 0) videos.add(R.drawable.no_favorites);
+
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-
 
     }
 
@@ -55,11 +58,10 @@ public class VideoView extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            for (int i=0; i<videos.length; i++){
+            for (int i=0; i<videos.size(); i++){
                 if (position == i){
-                    String title = context.getResources().getResourceName(videos[position]);
-                    String name[] = title.split("/");
-                    return new VideoFragment().newInstance(videos[position], i, name[1]);
+                    String title = context.getResources().getResourceEntryName(videos.get(position));
+                    return new VideoFragment().newInstance(videos.get(position), i, title);
                 }
             }
             return null;
@@ -67,7 +69,7 @@ public class VideoView extends FragmentActivity {
 
         @Override
         public int getCount(){
-            return videos.length;
+            return videos.size();
         }
     }
 

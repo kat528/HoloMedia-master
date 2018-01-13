@@ -22,7 +22,12 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -36,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView ;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     private String speechResult;
-
+    private int [] videos = {R.drawable.butterfly, R.drawable.earth, R.drawable.heart};
+    private ArrayList<Integer> video = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +67,22 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.favorite:
+                                String file = readFromFile();
+                                String titles[] = file.split("\n");
+                                for (int i=0; i<titles.length; i++){
+                                    video.add(getResources().getIdentifier(titles[i], "drawable", getPackageName()));
+                                }
                                 Intent i=new Intent(MainActivity.this,VideoView.class);
+                                i.putExtra("vid",video);
                                 Log.i(TAG, "onNavigationItemSelected: ");
                                 startActivity(i);
                                 break;
                             case R.id.Gallery:
                                 Intent k=new Intent(MainActivity.this,VideoView.class);
+                                for(int j=0; j<videos.length; j++){
+                                    video.add(videos[j]);
+                                }
+                                k.putExtra("vid",video);
                                 Log.i(TAG, "onNavigationItemSelected: ");
                                 startActivity(k);
                                 break;
@@ -96,6 +112,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private String readFromFile(){
+        StringBuilder text = new StringBuilder();
+        try {
+            File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        }catch(IOException e){
+            Log.e("Exception", "File read failed: " + e.toString());
+        }
+        return String.valueOf(text);
+    }
+
+
     // Showing google speech input dialog
 
     private void askSpeechInput() {
@@ -108,7 +142,9 @@ public class MainActivity extends AppCompatActivity {
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
-
+            Toast.makeText(getApplicationContext(),
+                    "Sorry! Your device doesn\\'t support speech input",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

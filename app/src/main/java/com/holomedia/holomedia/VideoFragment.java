@@ -18,12 +18,9 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 
@@ -32,9 +29,7 @@ public class VideoFragment extends Fragment {
 
     public int page, position;
     private String title;
-    private int[] videos = new int[]{R.raw.butterfly, R.raw.earth, R.raw.heart};
-    boolean showingFirst = true;
-    int v = videos[position];
+    boolean showingFirst;
     public String TAG = "TEST";
 
     public static VideoFragment newInstance(int position, int page, String title) {
@@ -67,23 +62,31 @@ public class VideoFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + videos[page]);
+                Uri uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + getResources().getIdentifier(title, "raw", getActivity().getPackageName()));
                 Intent a = new Intent(view.getContext(), PlayVideo.class);
                 a.putExtra("uri", uri);
                 startActivity(a);
             }
         });
 
-
         imageView.setImageResource(position);
 
+        BottomNavigationView bottomNavigationView;
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                view.findViewById(R.id.fav_toolbar);
+        String file = readFromFile();
+        if(file.contains(title)) {
+            bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.fav_toolbar);
+            bottomNavigationView.getMenu().clear();
+            bottomNavigationView.inflateMenu(R.menu.fav_menu2);
+            showingFirst = false;
+        }
+        else {
+            bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.fav_toolbar);
+            showingFirst = true;
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
-
 
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -97,7 +100,7 @@ public class VideoFragment extends Fragment {
                                     item.setIcon(R.drawable.heart_off);
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
-                                    writeToFile(title, context);
+                                    writeToFile(title);
                                     showingFirst = false;
                                 } else {
                                     item.setTitle("Add Favorite");
@@ -106,7 +109,7 @@ public class VideoFragment extends Fragment {
                                     int duration = Toast.LENGTH_SHORT;
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
-                                    deleteToFile(title, context);
+                                    deleteToFile(title);
                                     item.setIcon(R.drawable.heart_wh);
                                     showingFirst = true;
                                 }
@@ -131,8 +134,24 @@ public class VideoFragment extends Fragment {
 
     }
 
+    private String readFromFile(){
+        StringBuilder text = new StringBuilder();
+        try {
+            File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        }catch(IOException e){
+            Log.e("Exception", "File read failed: " + e.toString());
+        }
+        return String.valueOf(text);
+    }
 
-    private void writeToFile(String g, Context context) {
+    private void writeToFile(String g) {
         try {
             File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
             FileOutputStream fos = new FileOutputStream(file, true);
@@ -140,7 +159,7 @@ public class VideoFragment extends Fragment {
             if (!file.exists()) {
                 outputStreamWriter.write(g);
             }
-            outputStreamWriter.append("\n" + g + "\n");
+            outputStreamWriter.append(g + "\n");
             outputStreamWriter.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
@@ -148,7 +167,7 @@ public class VideoFragment extends Fragment {
     }
 
 
-    private void deleteToFile(String g, Context context) {
+    private void deleteToFile(String g) {
         try {
             File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
 
