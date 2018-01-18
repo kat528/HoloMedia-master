@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
@@ -67,15 +68,20 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.favorite:
+                                Intent l = null;
                                 String file = readFromFile();
-                                String titles[] = file.split("\n");
-                                for (int i=0; i<titles.length; i++){
-                                    video.add(getResources().getIdentifier(titles[i], "drawable", getPackageName()));
+                                if (file.length() < 1){
+                                    l = new Intent(MainActivity.this, AboutActivity.class);
+                                }else {
+                                    String titles[] = file.split("\n");
+                                    for (int i = 0; i < titles.length; i++) {
+                                        video.add(getResources().getIdentifier(titles[i], "drawable", getPackageName()));
+                                    }
+                                    l = new Intent(MainActivity.this, VideoView.class);
+                                    l.putExtra("vid", video);
                                 }
-                                Intent i=new Intent(MainActivity.this,VideoView.class);
-                                i.putExtra("vid",video);
                                 Log.i(TAG, "onNavigationItemSelected: ");
-                                startActivity(i);
+                                startActivity(l);
                                 break;
                             case R.id.Gallery:
                                 Intent k=new Intent(MainActivity.this,VideoView.class);
@@ -154,18 +160,37 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case REQ_CODE_SPEECH_INPUT: {
+            if(requestCode == 200) {
                 if (resultCode == RESULT_OK && null != data) {
 
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     speechResult = result.get(0);
+                    Toast.makeText(getApplicationContext(),
+                            speechResult,
+                            Toast.LENGTH_SHORT).show();
+                    String file = readFromFile();
+                    String titles[] = file.split("\n");
+                    boolean found = false;
+                    String title = null;
+                    for(int i =0; i< titles.length; i++){
+                        if (speechResult == titles[i]){
+                            found = true;
+                            title = titles[i];
+                        }
+                    }
+                    if (found) {
+                        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + getResources().getIdentifier(title, "drawable", getPackageName()));
+                        Intent a = new Intent(MainActivity.this, PlayVideo.class);
+                        a.putExtra("uri", uri);
+                        startActivity(a);
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                "Try again...",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
-                break;
             }
-
-        }
     }
 
 
