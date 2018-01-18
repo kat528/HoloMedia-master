@@ -72,17 +72,20 @@ public class MainActivity extends AppCompatActivity {
                                 Intent l = null;
                                 String file = readFromFile();
                                 if (file.length() < 1){
-                                    l = new Intent(MainActivity.this, AboutActivity.class);
+                                    no_favorite();
                                 }else {
                                     String titles[] = file.split("\n");
                                     for (int i = 0; i < titles.length; i++) {
                                         video.add(getResources().getIdentifier(titles[i], "drawable", getPackageName()));
+
                                     }
                                     l = new Intent(MainActivity.this, VideoView.class);
                                     l.putExtra("vid", video);
+                                    Log.i(TAG, "onNavigationItemSelected: ");
+                                    startActivity(l);
                                 }
-                                Log.i(TAG, "onNavigationItemSelected: ");
-                                startActivity(l);
+
+
                                 break;
                             case R.id.Gallery:
                                 Intent k=new Intent(MainActivity.this,VideoView.class);
@@ -209,10 +212,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     private void Warning(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.Warning);
+        alertDialogBuilder.setIcon(R.drawable.alert);
 
         alertDialogBuilder.setMessage("Be sure to click on the help menu for advice \"how to make hologram videos\" before you continue...   ");
         alertDialogBuilder.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
@@ -236,7 +239,40 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
+
+
         });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    private void no_favorite(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("No Favorites Yet");
+        alertDialogBuilder.setIcon(R.drawable.no_fav_ic);
+        alertDialogBuilder.setMessage("Please add some favorite videos first...   ");
+        alertDialogBuilder.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Log.i(TAG, "onNavigationItemSelected: ");
+
+            }
+
+        });
+
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
