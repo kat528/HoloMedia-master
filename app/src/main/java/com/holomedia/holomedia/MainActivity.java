@@ -173,11 +173,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             speechResult,
                             Toast.LENGTH_SHORT).show();
-                    String file = readFromFile();
-                    String titles[] = file.split("\n");
+                    String title;
                     boolean found = false;
-                    for (String title1 : titles) {
-                        if (Objects.equals(speechResult, title1)) {
+                    for (int i =0; i<videos.length; i++) {
+                        title = this.getResources().getResourceEntryName(videos[i]);
+                        if (speechResult.equals(title)) {
                             found = true;
                         }
                     }
