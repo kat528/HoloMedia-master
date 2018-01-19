@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     String titles[] = file.split("\n");
                     boolean found = false;
                     for (String title1 : titles) {
-                        if (Objects.equals(speechResult, title1)) {
+                        if (speechResult.equals(title1)) {
                             found = true;
                         }
                     }
