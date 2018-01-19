@@ -247,17 +247,6 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-
-
-
-
-
-
-
-
-
-
-
     private void no_favorite(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("No Favorites Yet");
@@ -352,7 +341,4 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-
-
 }
