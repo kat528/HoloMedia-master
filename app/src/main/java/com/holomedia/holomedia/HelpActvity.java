@@ -78,20 +78,12 @@ Button youtubebtn,contbtn,donbtn;
 
 
     private void cont_button() {
-        AlertDialog.Builder alertDialogBuilderbutt1 = new AlertDialog.Builder(this);
-        alertDialogBuilderbutt1.setMessage("Our E-mails : cs141065@teiath.gr ,cs141016@teiath.gr");
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto","Holomedia@suport.com", null));
 
-
-        alertDialogBuilderbutt1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilderbutt1.create();
-        alertDialog.show();
+        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
     }
+
 
     private void donatebtn(){
         AlertDialog.Builder alertDialogBuilder3 = new AlertDialog.Builder(this);
