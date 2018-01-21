@@ -1,13 +1,12 @@
 package com.holomedia.holomedia;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
+import android.app.ProgressDialog;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -33,19 +32,19 @@ public class PlayVideo extends Activity {
             mediaControls = new MediaController(PlayVideo.this);
         }
 
+        // Find your VideoView in your video_main.xml layout
+        myVideoView = (VideoView) findViewById(R.id.video_view);
 
-        final ProgressDialog progressDialog = new ProgressDialog(PlayVideo.this);
+        // Create a progressbar
+        progressDialog = new ProgressDialog(PlayVideo.this);
         // Set progressbar title
         progressDialog.setTitle("Please set the pyramid");
         // Set progressbar message
         progressDialog.setMessage("Loading...");
+
+        progressDialog.setCancelable(true);
         // Show progressbar
         progressDialog.show();
-
-
-
-        // Find your VideoView in your video_main.xml layout
-        myVideoView = (VideoView) findViewById(R.id.video_view);
 
         Uri uri = getIntent().getParcelableExtra("uri");
 
@@ -62,29 +61,12 @@ public class PlayVideo extends Activity {
         myVideoView.setOnPreparedListener(new OnPreparedListener() {
             // Close the progress bar and play the video
             public void onPrepared(MediaPlayer mp) {
-
-
-                if(progressDialog.isShowing()) {
-                    Runnable progressRunnable = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            progressDialog.cancel();
-                        }
-                    };
-
-                    Handler pdCanceller = new Handler();
-                    pdCanceller.postDelayed(progressRunnable, 3000);
-                }
-
-                if (!progressDialog.isShowing()) {
-                    myVideoView.seekTo(position);
-                     if (position == 0) {
-                         myVideoView.start();
-                     }
-                     else {
-                         myVideoView.pause();
-                     }
+                progressDialog.dismiss();
+                myVideoView.seekTo(position);
+                if (position == 0) {
+                    myVideoView.start();
+                } else {
+                    myVideoView.pause();
                 }
             }
         });
@@ -106,7 +88,3 @@ public class PlayVideo extends Activity {
     }
 
 }
-
-
-
-

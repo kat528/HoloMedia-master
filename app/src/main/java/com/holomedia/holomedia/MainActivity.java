@@ -31,6 +31,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.ENGLISH);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                "Please tell the Title of the Video");
+                "Hi speak something");
         try {
             startActivityForResult(intent, 200);
         } catch (ActivityNotFoundException a) {
@@ -163,35 +164,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 200) {
-            if (resultCode == RESULT_OK && data != null) {
+            if(requestCode == 200) {
+                if (resultCode == RESULT_OK && data != null) {
 
-                ArrayList<String> result = data
-                        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                speechResult = result.get(0);
-                Toast.makeText(getApplicationContext(),
-                        speechResult,
-                        Toast.LENGTH_SHORT).show();
-                String title;
-                boolean found = false;
-                for (int i = 0; i < videos.length; i++) {
-                    title = this.getResources().getResourceEntryName(videos[i]);
-                    if (speechResult.equals(title)) {
-                        found = true;
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    speechResult = result.get(0);
+                    Toast.makeText(getApplicationContext(),
+                            speechResult,
+                            Toast.LENGTH_SHORT).show();
+                    String title;
+                    boolean found = false;
+                    for (int i =0; i<videos.length; i++) {
+                        title = this.getResources().getResourceEntryName(videos[i]);
+                        if (speechResult.equals(title)) { {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + getResources().getIdentifier(speechResult, "raw", getPackageName()));
+                        Intent a = new Intent(MainActivity.this, PlayVideo.class);
+                        a.putExtra("uri", uri);
+                        startActivity(a);
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                "Try again...",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
-                if (found) {
-                    Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + getResources().getIdentifier(speechResult, "raw", getPackageName()));
-                    Intent a = new Intent(MainActivity.this, PlayVideo.class);
-                    a.putExtra("uri", uri);
-                    startActivity(a);
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Try again...",
-                            Toast.LENGTH_SHORT).show();
-                }
             }
-        }
     }
 
 

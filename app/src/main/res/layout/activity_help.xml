@@ -33,7 +33,7 @@
         android:layout_height="30dp"
         android:layout_below="@+id/hp_btn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="79dp"
+        android:layout_marginTop="88dp"
         android:background="@drawable/watch_button"
         android:text="Contact Us" />
 
@@ -41,9 +41,9 @@
         android:id="@+id/don_button"
         android:layout_width="200dp"
         android:layout_height="30dp"
-        android:layout_below="@+id/cont_button"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="58dp"
+        android:layout_marginBottom="58dp"
         android:background="@drawable/watch_button"
         android:text="Donate" />
 
@@ -56,7 +56,6 @@
         android:layout_marginTop="45dp"
         android:fontFamily="serif"
         android:text="Welcome to our manual, users are advised to view the video below, in order to create a hologram video eligible to our app. "
-        android:textAlignment="center"
         android:textColor="@android:color/holo_green_dark"
         android:textSize="18sp" />
 
