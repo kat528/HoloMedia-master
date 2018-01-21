@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     boolean found = false;
                     for (int i =0; i<videos.length; i++) {
                         title = this.getResources().getResourceEntryName(videos[i]);
-                        if (speechResult.equals(title)) {
+                        if (speechResult.equals(title)) { {
                             found = true;
                         }
                     }

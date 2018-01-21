@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -47,25 +46,6 @@ public class PlayVideo extends Activity {
         // Show progressbar
         progressDialog.show();
 
-        Runnable progessRunable=new Runnable() {
-
-            @Override
-            public void run() {
-                progressDialog.cancel();
-            }
-        };
-
-        Handler pdCanseller=new Handler();
-        pdCanseller.postDelayed(progessRunable,4000);
-
-        try{
-            Thread.sleep(5000);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
         Uri uri = getIntent().getParcelableExtra("uri");
 
         try {
@@ -81,7 +61,7 @@ public class PlayVideo extends Activity {
         myVideoView.setOnPreparedListener(new OnPreparedListener() {
             // Close the progress bar and play the video
             public void onPrepared(MediaPlayer mp) {
-                //progressDialog.dismiss();
+                progressDialog.dismiss();
                 myVideoView.seekTo(position);
                 if (position == 0) {
                     myVideoView.start();
