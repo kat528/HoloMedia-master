@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     private String readFromFile(){
         StringBuilder text = new StringBuilder();
         try {
-            File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
+            File file = new File(getFilesDir().getAbsolutePath(),"config.txt");
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
             while ((line = br.readLine()) != null) {

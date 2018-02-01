@@ -34,14 +34,14 @@ public class PlayVideo extends Activity {
         }
 
 
-        final ProgressDialog progressDialog = new ProgressDialog(PlayVideo.this);
+        /*final ProgressDialog progressDialog = new ProgressDialog(PlayVideo.this);
         // Set progressbar title
         progressDialog.setTitle("Please set the pyramid");
         // Set progressbar message
         progressDialog.setMessage("Loading...");
         // Show progressbar
         progressDialog.show();
-
+*/
 
 
         // Find your VideoView in your video_main.xml layout
@@ -64,7 +64,7 @@ public class PlayVideo extends Activity {
             public void onPrepared(MediaPlayer mp) {
 
 
-                if (progressDialog.isShowing()) {
+               /* if (progressDialog.isShowing()) {
 
                     Runnable progressRunnable = new Runnable() {
                         @Override
@@ -80,7 +80,7 @@ public class PlayVideo extends Activity {
                     };
                     Handler pdCanceller = new Handler();
                     pdCanceller.postDelayed(progressRunnable, 3000);
-                }
+                }*/
             }
         });
 

@@ -137,7 +137,7 @@ public class VideoFragment extends Fragment {
     private String readFromFile(){
         StringBuilder text = new StringBuilder();
         try {
-            File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
+            File file = new File(getContext().getFilesDir().getAbsolutePath(),"config.txt");
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
             while ((line = br.readLine()) != null) {
@@ -153,7 +153,7 @@ public class VideoFragment extends Fragment {
 
     private void writeToFile(String g) {
         try {
-            File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
+            File file = new File(getContext().getFilesDir().getAbsolutePath(),"config.txt");
             FileOutputStream fos = new FileOutputStream(file, true);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
             if (!file.exists()) {
@@ -169,7 +169,7 @@ public class VideoFragment extends Fragment {
 
     private void deleteToFile(String g) {
         try {
-            File file = new File("/data/data/com.holomedia.holomedia/files/config.txt");
+            File file = new File(getContext().getFilesDir().getAbsolutePath(),"config.txt");
 
             if (file.exists()) {
                 BufferedReader br = new BufferedReader(new FileReader(file));
