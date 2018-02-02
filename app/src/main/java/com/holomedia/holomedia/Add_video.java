@@ -23,6 +23,11 @@ import android.view.WindowManager;
 
 import com.spark.submitbutton.SubmitButton;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 public class Add_video extends AppCompatActivity {
 
     public  static final int  MY_PERMISSIONS_REQUEST_STORAGE = 0;
@@ -122,6 +127,7 @@ public class Add_video extends AppCompatActivity {
 
         if(resultCode == RESULT_OK){
             Uri uri = data.getData();                                                       //Videoplay
+            writeToFile(uri.toString());
             Intent i = new Intent(this, PlayVideo.class);
             i.putExtra("uri",uri);
             startActivity(i);
@@ -149,19 +155,20 @@ public class Add_video extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private void writeToFile(String g) {
+        try {
+            File file = new File(getFilesDir().getAbsolutePath(),"config.txt");
+            FileOutputStream fos = new FileOutputStream(file, true);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            if (!file.exists()) {
+                outputStreamWriter.write(g);
+            }
+            outputStreamWriter.append(g + "\n");
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
 
 
 //Toolbar Settings------------------------------------------------------------------------------------
