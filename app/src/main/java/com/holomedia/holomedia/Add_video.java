@@ -129,12 +129,8 @@ public class Add_video extends AppCompatActivity {
 
         if(resultCode == RESULT_OK){
             Uri uri = data.getData();                                                       //Videoplay
-<<<<<<< HEAD
             String video = getRealPathFromUri(this, uri);
             writeToFile(video);
-=======
-            writeToFile(uri.toString());
->>>>>>> 94ac8cfb10a9aeab72133370e7c14a05f239ac4a
             Intent i = new Intent(this, PlayVideo.class);
             i.putExtra("uri",uri);
             startActivity(i);
@@ -176,7 +172,6 @@ public class Add_video extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
     public static String getRealPathFromUri(Context context, Uri contentUri){
         Cursor cursor = null;
         try {
@@ -191,23 +186,6 @@ public class Add_video extends AppCompatActivity {
             }
         }
     }
-=======
-    private void writeToFile(String g) {
-        try {
-            File file = new File(getFilesDir().getAbsolutePath(),"config.txt");
-            FileOutputStream fos = new FileOutputStream(file, true);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
-            if (!file.exists()) {
-                outputStreamWriter.write(g);
-            }
-            outputStreamWriter.append(g + "\n");
-            outputStreamWriter.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
-    }
-
->>>>>>> 94ac8cfb10a9aeab72133370e7c14a05f239ac4a
 
 //Toolbar Settings------------------------------------------------------------------------------------
 
@@ -275,6 +253,6 @@ public class Add_video extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
 
-}
+        }
     }
 }
