@@ -2,8 +2,11 @@ package com.holomedia.holomedia;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -31,13 +34,28 @@ public class VideoFragment extends Fragment {
     private String title;
     boolean showingFirst;
     public String TAG = "TEST";
+    public String path;
+    public static boolean first;
 
-    public static VideoFragment newInstance(int position, int page, String title) {
+    public static VideoFragment newInstance(int position, int page, String title, Boolean first) {
         VideoFragment fragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
         args.putInt("somePosition", position);
+        args.putBoolean("someBool", first);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public static VideoFragment newInstance2(String position, int page, String title, Boolean first) {
+        VideoFragment fragment = new VideoFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        args.putString("someTitle", title);
+        args.putString("somePosition", position);
+        args.putBoolean("someBool", first);
         fragment.setArguments(args);
 
         return fragment;
@@ -48,7 +66,11 @@ public class VideoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("someTitle");
-        position = getArguments().getInt("somePosition");
+        first = getArguments().getBoolean("someBool");
+        if (first)
+            position = getArguments().getInt("somePosition");
+        else
+            path = getArguments().getString("somePosition");
     }
 
     @Override
@@ -62,14 +84,23 @@ public class VideoFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + getResources().getIdentifier(title, "raw", getActivity().getPackageName()));
+                Uri uri;
+                if (first)
+                    uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + getResources().getIdentifier(title, "raw", getActivity().getPackageName()));
+                else
+                    uri = Uri.parse(path);
                 Intent a = new Intent(view.getContext(), PlayVideo.class);
                 a.putExtra("uri", uri);
                 startActivity(a);
             }
         });
 
-        imageView.setImageResource(position);
+        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
+
+        if (first)
+            imageView.setImageResource(position);
+        else
+            imageView.setImageBitmap(thumb);
 
         BottomNavigationView bottomNavigationView;
 
@@ -92,7 +123,7 @@ public class VideoFragment extends Fragment {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.favorite:
-                                if (showingFirst == true) {
+                                if (showingFirst) {
                                     item.setTitle("Unfavorite");
                                     Context context = getActivity();
                                     CharSequence text = "Added to Favorites";

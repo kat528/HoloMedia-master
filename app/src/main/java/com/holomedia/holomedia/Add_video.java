@@ -1,9 +1,11 @@
 package com.holomedia.holomedia;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
@@ -22,6 +24,11 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.spark.submitbutton.SubmitButton;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class Add_video extends AppCompatActivity {
 
@@ -122,6 +129,8 @@ public class Add_video extends AppCompatActivity {
 
         if(resultCode == RESULT_OK){
             Uri uri = data.getData();                                                       //Videoplay
+            String video = getRealPathFromUri(this, uri);
+            writeToFile(video);
             Intent i = new Intent(this, PlayVideo.class);
             i.putExtra("uri",uri);
             startActivity(i);
@@ -148,21 +157,35 @@ public class Add_video extends AppCompatActivity {
 
     }
 
+    private void writeToFile(String g) {
+        try {
+            File file = new File(getFilesDir().getAbsolutePath(),"AddedVideos.txt");
+            FileOutputStream fos = new FileOutputStream(file, true);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            if (!file.exists()) {
+                outputStreamWriter.write(g);
+            }
+            outputStreamWriter.append(g + "\n");
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static String getRealPathFromUri(Context context, Uri contentUri){
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Video.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }finally {
+            if (cursor != null){
+                cursor.close();
+            }
+        }
+    }
 
 //Toolbar Settings------------------------------------------------------------------------------------
 
