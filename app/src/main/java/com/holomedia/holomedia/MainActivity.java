@@ -3,6 +3,7 @@ package com.holomedia.holomedia;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +25,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private String speechResult;
     private int [] videos = {R.drawable.butterfly, R.drawable.earth, R.drawable.heart};
     private ArrayList<Integer> video = new ArrayList<>();
+    public static final String PREFS_NAME = "MyPrefsFile1";
+    public CheckBox dontShowAgain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(k);
                                 break;
                             case R.id.add:
-
                                 Warning();
 
                                 break;
@@ -209,42 +213,60 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+private void Warning() {
+    AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+    LayoutInflater adbInflater = LayoutInflater.from(MainActivity.this);
+    View eulaLayout = adbInflater.inflate(R.layout.checkbox, null);
+    dontShowAgain = (CheckBox) eulaLayout.findViewById(R.id.skip);
+    adb.setView(eulaLayout);
+    adb.setIcon(R.drawable.alert);
+    adb.setTitle("Warning!!!");
+    adb.setMessage("Be sure to click on the help menu for advice \\\"how to make hologram videos\\\" before you continue... ");
+    adb.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+            String checkBoxResult = "NOT checked";
+            if (dontShowAgain.isChecked())
+                checkBoxResult = "checked";
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("skipMessage", checkBoxResult);
+            // Commit the edits!
+            editor.commit();
+            Intent a=new Intent(MainActivity.this,Add_video.class);
+            Log.i(TAG, "onNavigationItemSelected: ");
+            startActivity(a);
+        }
+    });
+
+    adb.setNegativeButton("Take me there!", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+            String checkBoxResult = "NOT checked";
+            if (dontShowAgain.isChecked())
+                checkBoxResult = "checked";
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("skipMessage", checkBoxResult);
+            // Commit the edits!
+            editor.commit();
+            Intent a=new Intent(MainActivity.this,HelpActvity.class);
+            Log.i(TAG, "onNavigationItemSelected: ");
+            startActivity(a);
+
+        }
+    });
+    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    String skipMessage = settings.getString("skipMessage", "NOT checked");
+
+    if (!skipMessage.equals("checked"))
+        adb.show();
+    else {
+        Intent b=new Intent(MainActivity.this,Add_video.class);
+        Log.i(TAG, "onNavigationItemSelected: ");
+        startActivity(b);}
+
+}
 
 
-    private void Warning(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(R.string.Warning);
-        alertDialogBuilder.setIcon(R.drawable.alert);
-
-        alertDialogBuilder.setMessage("Be sure to click on the help menu for advice \"how to make hologram videos\" before you continue...   ");
-        alertDialogBuilder.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                Intent a=new Intent(MainActivity.this,Add_video.class);
-                Log.i(TAG, "onNavigationItemSelected: ");
-                startActivity(a);
-
-            }
-
-        });
-        alertDialogBuilder.setNegativeButton("Take me there!",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                Intent a=new Intent(MainActivity.this,HelpActvity.class);
-                Log.i(TAG, "onNavigationItemSelected: ");
-                startActivity(a);
-
-
-            }
-
-
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
 
     private void no_favorite(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

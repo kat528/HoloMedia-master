@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.spark.submitbutton.SubmitButton;
 
@@ -29,6 +30,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+
 
 public class Add_video extends AppCompatActivity {
 
@@ -69,6 +71,7 @@ public class Add_video extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, 0);
+
             }
         });
 
@@ -78,6 +81,7 @@ public class Add_video extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"));
                 startActivity(i);
+
             }
         });
 
@@ -160,13 +164,34 @@ public class Add_video extends AppCompatActivity {
     private void writeToFile(String g) {
         try {
             File file = new File(getFilesDir().getAbsolutePath(),"AddedVideos.txt");
-            FileOutputStream fos = new FileOutputStream(file, true);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
-            if (!file.exists()) {
-                outputStreamWriter.write(g);
+            if(!file.exists()) {
+                FileOutputStream fos = new FileOutputStream(file, true);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+
+
+                //Just a toast ;)
+                Context context = getApplicationContext();
+                CharSequence text = "Successfully added to Gallery";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+                outputStreamWriter.append(g + "\n");
+
+
+                outputStreamWriter.close();
             }
-            outputStreamWriter.append(g + "\n");
-            outputStreamWriter.close();
+            else{
+
+                Context context = getApplicationContext();
+                CharSequence text = "Already added to Gallery";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+
+                }
+
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }

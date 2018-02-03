@@ -95,7 +95,7 @@ public class VideoFragment extends Fragment {
             }
         });
 
-        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
+        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path,MediaStore.Images.Thumbnails.MINI_KIND);
 
         if (first)
             imageView.setImageResource(position);

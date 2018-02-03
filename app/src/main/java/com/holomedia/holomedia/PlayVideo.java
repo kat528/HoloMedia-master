@@ -46,7 +46,6 @@ public class PlayVideo extends Activity {
 
         // Find your VideoView in your video_main.xml layout
         myVideoView = (VideoView) findViewById(R.id.video_view);
-
         Uri uri = getIntent().getParcelableExtra("uri");
 
         try {
