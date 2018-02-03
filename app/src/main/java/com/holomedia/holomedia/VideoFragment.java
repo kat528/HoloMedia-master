@@ -38,12 +38,12 @@ public class VideoFragment extends Fragment {
     public String TAG = "TEST";
     public String path;
 
-    public static VideoFragment newInstance(String position, int page, String title) {
+    public static VideoFragment newInstance(String path, int page, String title) {
         VideoFragment fragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
-        args.putString("somePosition", position);
+        args.putString("somePosition", path);
         fragment.setArguments(args);
 
         return fragment;
@@ -89,7 +89,7 @@ public class VideoFragment extends Fragment {
         BottomNavigationView bottomNavigationView;
 
         String file = readFromFile();
-        if(file.contains(title)) {
+        if(file.contains(path)) {
             bottomNavigationView = (BottomNavigationView) view.findViewById(R.id.fav_toolbar);
             bottomNavigationView.getMenu().clear();
             bottomNavigationView.inflateMenu(R.menu.fav_menu2);
@@ -115,7 +115,7 @@ public class VideoFragment extends Fragment {
                                     item.setIcon(R.drawable.heart_off);
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
-                                    writeToFile(title);
+                                    writeToFile(path);
                                     showingFirst = false;
                                 } else {
                                     item.setTitle("Add Favorite");
@@ -124,7 +124,7 @@ public class VideoFragment extends Fragment {
                                     int duration = Toast.LENGTH_SHORT;
                                     Toast toast = Toast.makeText(context, text, duration);
                                     toast.show();
-                                    deleteToFile(title);
+                                    deleteToFile(path);
                                     item.setIcon(R.drawable.heart_wh);
                                     showingFirst = true;
                                 }

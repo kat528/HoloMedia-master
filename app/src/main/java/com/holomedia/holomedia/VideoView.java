@@ -14,18 +14,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class VideoView extends FragmentActivity {
 
 
-    private ArrayList<Integer> videos = new ArrayList<>();
-    String[] v = { "foo"};
-    String text = "";
+    private String[] videos;
+    //String[] v = { "foo"};
+    //String text = "";
     private ViewPager mPager;
-    private FragmentPagerAdapter mPagerAdapter;
     private Context context = this;
-    boolean firstTime = true;
+    //boolean firstTime = true;
+    String[] title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +32,13 @@ public class VideoView extends FragmentActivity {
         setContentView(R.layout.activity_video_view);
 
         Intent intent = getIntent();
-        videos = intent.getIntegerArrayListExtra("vid");
+        videos = intent.getStringArrayExtra("vid");
+        if(intent.hasExtra("title"))
+            title = intent.getStringArrayExtra("title");
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        FragmentPagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
     }
@@ -54,13 +55,13 @@ public class VideoView extends FragmentActivity {
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
+        private ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            text = readFromFile();
+            /*text = readFromFile();
             if(text.length() > 1){
                 v = text.split("\n");
                 if(firstTime) {
@@ -73,36 +74,30 @@ public class VideoView extends FragmentActivity {
                     notifyDataSetChanged();
                     firstTime = false;
                 }
-            }
-            if (videos.size() != 0) {
-                for (int i = 0; i < videos.size(); i++) {
+            }*/
+            if (videos.length != 0/* && v != null*/) {
+                int j = -1;
+                for (int i = 0; i < videos.length; i++) {
                     if (position == i) {
-                        String title = context.getResources().getResourceEntryName(videos.get(position));
-                        String path = "android.resource://" + getPackageName() + "/" + getResources().getIdentifier(title, "raw", getPackageName());
-                        return new VideoFragment().newInstance(path, i, title);
+                        return new VideoFragment().newInstance(videos[i], i, title[i]);
                     }
                 }
-            }
-            if(v != null) {
-                int j = 0;
-                for (int i = videos.size(); i < videos.size() + v.length; i++) {
+            }/*else{
+                for (int i = 0; i < videos.length; i++){
                     if (position == i) {
-                        String[] t = v[j].split("/");
-                        String title = t[6];
-                        return new VideoFragment().newInstance(v[j], i, title);
+                        return new VideoFragment().newInstance(videos[i], i, title[i]);
                     }
-                    j++;
                 }
-            }
+            }*/
             return null;
         }
 
         @Override
         public int getCount(){
-            if (v != null)
-                return videos.size() + v.length;
-            else
-                return videos.size();
+            /*if (v != null)
+                return videos.length + v.length;
+            else*/
+                return videos.length;
         }
     }
 

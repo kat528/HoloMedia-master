@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE_SPEECH_INPUT = 100;
     private String speechResult;
     private int [] videos = {R.raw.butterfly, R.raw.earth, R.raw.heart};
-    private ArrayList<Integer> video = new ArrayList<>();
     public static final String PREFS_NAME = "MyPrefsFile1";
     public CheckBox dontShowAgain;
 
@@ -74,29 +73,59 @@ public class MainActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.favorite:
                                 Intent l = null;
-                                String file = readFromFile();
+                                String file = readFromFile("config.txt");
                                 if (file.length() < 1){
                                     no_favorite();
                                 }else {
                                     String titles[] = file.split("\n");
+                                    String title[] = new String[titles.length];
+                                    String[] video = new String[titles.length];
                                     for (int i = 0; i < titles.length; i++) {
-                                        video.add(getResources().getIdentifier(titles[i], "raw", getPackageName()));
-
+                                        video[i] = titles[i];
+                                        if(video[i].contains("android.resource")){
+                                            title[i] = getResources().getResourceEntryName(videos[i]);
+                                        }else{
+                                            title[i] = video[i].split("/")[6];
+                                        }
                                     }
                                     l = new Intent(MainActivity.this, VideoView.class);
                                     l.putExtra("vid", video);
+                                    if(title[0] != "foo") l.putExtra("title",title);
                                     Log.i(TAG, "onNavigationItemSelected: ");
                                     startActivity(l);
                                 }
-
-
                                 break;
                             case R.id.Gallery:
                                 Intent k=new Intent(MainActivity.this,VideoView.class);
-                                for(int j=0; j<videos.length; j++){
-                                    video.add(videos[j]);
+                                String title[];
+                                String text = readFromFile("AddedVideos.txt");
+                                if (text.length() > 1) {
+                                    String[] v = text.split("\n");
+                                    title = new String[videos.length+v.length];
+                                    String[] video = new String[videos.length+v.length];
+                                    int i = -1;
+                                    for(int j=0; j<videos.length + v.length; j++){
+                                        if(j<3) {
+                                            video[j] = "android.resource://" + getPackageName() + "/" + videos[j];
+                                            title[j] = getResources().getResourceEntryName(videos[j]);
+                                        }else{
+                                            i++;
+                                            video[j] = v[i];
+                                            title[j] = video[j].split("/")[6];
+                                        }
+                                    }
+                                    k.putExtra("vid",video);
+                                    k.putExtra("title",title);
+                                }else {
+                                    String[] video = new String[videos.length];
+                                    title = new String[videos.length];
+                                    for (int j = 0; j < videos.length; j++) {
+                                        video[j] = "android.resource://" + getPackageName() + "/" + videos[j];
+                                        title[j] = getResources().getResourceEntryName(videos[j]);
+                                    }
+                                    k.putExtra("vid",video);
+                                    k.putExtra("title",title);
                                 }
-                                k.putExtra("vid",video);
                                 Log.i(TAG, "onNavigationItemSelected: ");
                                 startActivity(k);
                                 break;
@@ -125,10 +154,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private String readFromFile(){
+    private String readFromFile(String name){
         StringBuilder text = new StringBuilder();
         try {
-            File file = new File(getFilesDir().getAbsolutePath(),"config.txt");
+            File file = new File(getFilesDir().getAbsolutePath(),name);
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
             while ((line = br.readLine()) != null) {
