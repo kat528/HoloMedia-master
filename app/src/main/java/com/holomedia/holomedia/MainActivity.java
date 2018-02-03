@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView ;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     private String speechResult;
-    private int [] videos = {R.drawable.butterfly, R.drawable.earth, R.drawable.heart};
+    private int [] videos = {R.raw.butterfly, R.raw.earth, R.raw.heart};
     private ArrayList<Integer> video = new ArrayList<>();
     public static final String PREFS_NAME = "MyPrefsFile1";
     public CheckBox dontShowAgain;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                                 }else {
                                     String titles[] = file.split("\n");
                                     for (int i = 0; i < titles.length; i++) {
-                                        video.add(getResources().getIdentifier(titles[i], "drawable", getPackageName()));
+                                        video.add(getResources().getIdentifier(titles[i], "raw", getPackageName()));
 
                                     }
                                     l = new Intent(MainActivity.this, VideoView.class);

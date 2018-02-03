@@ -26,6 +26,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import static android.media.ThumbnailUtils.extractThumbnail;
+
 
 public class VideoFragment extends Fragment {
 
@@ -35,27 +37,13 @@ public class VideoFragment extends Fragment {
     boolean showingFirst;
     public String TAG = "TEST";
     public String path;
-    public static boolean first;
 
-    public static VideoFragment newInstance(int position, int page, String title, Boolean first) {
-        VideoFragment fragment = new VideoFragment();
-        Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        args.putInt("somePosition", position);
-        args.putBoolean("someBool", first);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
-    public static VideoFragment newInstance2(String position, int page, String title, Boolean first) {
+    public static VideoFragment newInstance(String position, int page, String title) {
         VideoFragment fragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
         args.putString("somePosition", position);
-        args.putBoolean("someBool", first);
         fragment.setArguments(args);
 
         return fragment;
@@ -66,11 +54,7 @@ public class VideoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("someTitle");
-        first = getArguments().getBoolean("someBool");
-        if (first)
-            position = getArguments().getInt("somePosition");
-        else
-            path = getArguments().getString("somePosition");
+        path = getArguments().getString("somePosition");
     }
 
     @Override
@@ -84,23 +68,23 @@ public class VideoFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri;
-                if (first)
-                    uri = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + getResources().getIdentifier(title, "raw", getActivity().getPackageName()));
-                else
-                    uri = Uri.parse(path);
+                Uri uri = Uri.parse(path);
                 Intent a = new Intent(view.getContext(), PlayVideo.class);
                 a.putExtra("uri", uri);
                 startActivity(a);
             }
         });
 
-        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path,MediaStore.Images.Thumbnails.MINI_KIND);
 
-        if (first)
+        position = getResources().getIdentifier(title, "drawable", getActivity().getPackageName());
+
+        if (path.contains("android.resource")){
             imageView.setImageResource(position);
-        else
+        }else {
+            Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
+            thumb = extractThumbnail(thumb, 1000, 1250);
             imageView.setImageBitmap(thumb);
+        }
 
         BottomNavigationView bottomNavigationView;
 

@@ -34,7 +34,6 @@ public class VideoView extends FragmentActivity {
 
         Intent intent = getIntent();
         videos = intent.getIntegerArrayListExtra("vid");
-        if (videos.size() == 0) videos.add(R.drawable.no_favorites);
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
@@ -75,19 +74,22 @@ public class VideoView extends FragmentActivity {
                     firstTime = false;
                 }
             }
-            for (int i=0; i<videos.size(); i++){
-                if (position == i){
-                    String title = context.getResources().getResourceEntryName(videos.get(position));
-                    return new VideoFragment().newInstance(videos.get(position), i, title, true);
+            if (videos.size() != 0) {
+                for (int i = 0; i < videos.size(); i++) {
+                    if (position == i) {
+                        String title = context.getResources().getResourceEntryName(videos.get(position));
+                        String path = "android.resource://" + getPackageName() + "/" + getResources().getIdentifier(title, "raw", getPackageName());
+                        return new VideoFragment().newInstance(path, i, title);
+                    }
                 }
             }
-            if(v[0] != "foo"){
-                int j=0;
-                for (int i=videos.size(); i<videos.size() + v.length; i++){
-                    if (position == i){
+            if(v != null) {
+                int j = 0;
+                for (int i = videos.size(); i < videos.size() + v.length; i++) {
+                    if (position == i) {
                         String[] t = v[j].split("/");
                         String title = t[6];
-                        return new VideoFragment().newInstance2(v[j], i, title, false);
+                        return new VideoFragment().newInstance(v[j], i, title);
                     }
                     j++;
                 }

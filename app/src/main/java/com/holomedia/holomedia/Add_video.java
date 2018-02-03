@@ -26,8 +26,10 @@ import android.widget.Toast;
 
 import com.spark.submitbutton.SubmitButton;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
@@ -164,33 +166,33 @@ public class Add_video extends AppCompatActivity {
     private void writeToFile(String g) {
         try {
             File file = new File(getFilesDir().getAbsolutePath(),"AddedVideos.txt");
-            if(!file.exists()) {
-                FileOutputStream fos = new FileOutputStream(file, true);
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            FileOutputStream fos = new FileOutputStream(file, true);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            if (file.exists()) {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                Boolean found = false;
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (line.equals(g)) {
+                        found = true;
+                    }
+                }
+                br.close();
 
-
-                //Just a toast ;)
-                Context context = getApplicationContext();
-                CharSequence text = "Successfully added to Gallery";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
+            if(!found)
                 outputStreamWriter.append(g + "\n");
 
-
-                outputStreamWriter.close();
+            }else{
+                outputStreamWriter.write(g);
             }
-            else{
+            outputStreamWriter.close();
 
-                Context context = getApplicationContext();
-                CharSequence text = "Already added to Gallery";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
-
-                }
+            //Just a toast ;)
+            Context context = getApplicationContext();
+            CharSequence text = "Successfully added to Gallery";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
 
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
